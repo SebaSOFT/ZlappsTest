@@ -1,0 +1,26 @@
+{
+  "name": "zlapps-test",
+  "version": "1.0.0",
+  "description": "This is the technical assestment for Zlapps Inc. interview",
+  "main": "app.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SebaSOFT/ZlappsTest.git"
+  },
+  "keywords": [
+    "node",
+    "nodejs",
+    "mongodb",
+    "api",
+    "swagger"
+  ],
+  "author": "Sebastian Dieguez <sebasoft@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SebaSOFT/ZlappsTest/issues"
+  },
+  "homepage": "https://github.com/SebaSOFT/ZlappsTest#readme"
+}
