@@ -1,6 +1,6 @@
 'use strict';
 
-const article = require('./article');
+const article = require('./article').controller;
 
 module.exports = {
     create: article.create,

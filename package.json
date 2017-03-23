@@ -1,10 +1,11 @@
 {
   "name": "zlapps-test",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is the technical assestment for Zlapps Inc. interview",
   "main": "api/index.js",
   "scripts": {
-    "test": "gulp test"
+    "start": "node api/index.js",
+    "test": "mocha api/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -30,5 +31,10 @@
     "joi": "^10.3.0",
     "morgan": "^1.8.1",
     "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.2.0"
   }
 }

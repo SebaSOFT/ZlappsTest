@@ -2,8 +2,9 @@
 const promise = require('bluebird');
 const logger = require('winston');
 const val = require('joi');
-promise.promisify(val.validate,{context:val});
-
+promise.promisify(val.validate, {
+    context: val
+});
 // article data model
 const articleModel = val.object().label('Article').keys({
     _id: val.string().allow([null, '']).default(null).label('Article ID'),
@@ -12,7 +13,6 @@ const articleModel = val.object().label('Article').keys({
     text: val.string().empty().required().label('Article Text'),
     tags: val.array().items(val.string().empty().required()).label('Article Tags')
 }).unknown().required();
-
 // article controller
 const articleController = {
     create: function(article) {
@@ -32,4 +32,7 @@ const articleController = {
         logger.log(tag);
     }
 };
-module.exports = articleController;
+module.exports = {
+    model: articleModel,
+    controller: articleController
+};
