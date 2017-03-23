@@ -1,14 +1,31 @@
 'use strict';
 
-const http = require('http');
 const config = require('../config');
-const server = require('./server');
+const app = require('./server');
 const logger = require('winston');
-const promise = require('bluebird');
+const httpLogger = require('morgan');
 
+// logger setup
 logger.level = config.logger.level;
-logger.add(logger.transports.File, { filename: './log/'+config.env+'.log', level: config.logger.level });
+logger.add(logger.transports.File, {
+    filename: '../log/api.' + config.env + '.log',
+    level: config.logger.level
+});
 if (config.env != 'development') {
     logger.remove(logger.transports.Console);
 }
 
+// add morgan to the server to log HTTP requests/responses
+logger.stream = {
+    write: function(message, encoding) {
+        logger.info(message);
+    }
+};
+app.use(httpLogger('combined', {
+    stream: logger.stream
+}));
+
+// Starting the server
+app.listen(config.server.port, function() {
+    logger.info('Node server started successfully, listening on port: ' + config.server.port);
+});

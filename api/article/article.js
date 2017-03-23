@@ -1,8 +1,10 @@
 'use strict';
 const promise = require('bluebird');
 const logger = require('winston');
-const joi = require('joi');
-const val = promise.promisify(joi.validate, joi);
+const val = require('joi');
+promise.promisify(val.validate,{context:val});
+
+// article data model
 const articleModel = val.object().label('Article').keys({
     _id: val.string().allow([null, '']).default(null).label('Article ID'),
     userId: val.number().integer().positive().required().label('User ID'),
@@ -10,6 +12,8 @@ const articleModel = val.object().label('Article').keys({
     text: val.string().empty().required().label('Article Text'),
     tags: val.array().items(val.string().empty().required()).label('Article Tags')
 }).unknown().required();
+
+// article controller
 const articleController = {
     create: function(article) {
         val.validate(article, articleModel).then(function(done) {
