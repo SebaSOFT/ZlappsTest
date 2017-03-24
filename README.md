@@ -17,8 +17,8 @@
 
 1. Run `npm install` to install server dependencies.
 2. Run `mongod` in a separate shell to keep an instance of the MongoDB Daemon running
-3. Run `npm start` to start the development server.
+3. Run `npm run dev` to start the development server.
 
 ## Testing
 
-Running `npm test` will run the unit/integration tests with mocha.
+Running `npm test` will run _eslint_ source code validation and the unit/integration tests with _mocha_.
