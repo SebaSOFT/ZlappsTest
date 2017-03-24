@@ -4,9 +4,9 @@ const describe = require('mocha').describe;
 const it = require('mocha').it;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../server');
-const should = chai.should();
+const server = require('../server'); //eslint-disable-line no-unused-vars
 
+chai.should();
 chai.use(chaiHttp);
 
 describe('Articles', function() {

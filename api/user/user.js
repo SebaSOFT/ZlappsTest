@@ -1,26 +1,54 @@
 'use strict';
+
 const promise = require('bluebird');
 const logger = require('winston');
 const val = require('joi');
-promise.promisify(val.validate,{context:val});
+val.validate = promise.promisify(val.validate);
+const User = require('./user.model');
 
-
-// user data model
-const userModel = val.object().label('Article').keys({
-    _id: val.string().allow([null, '']).default(null).label('Article ID'),
-    name: val.string().empty().required().label('User <Name></Name>'),
-    avatar: val.string().empty().required().label('User Avatar')
+// user validation model
+const userModel = val.object().label('User').keys({
+    _id: val.string().hex().optional().label('User ID'),
+    name: val.string().empty().required().label('User Name'),
+    avatar: val.string().uri({
+        scheme: ['http', 'https']
+    }).empty().required().label('User Avatar')
 }).unknown().required();
 
 // User controller
 const userController = {
-    create: function(article) {
-        val.validate(article, userModel).then(function(done) {
-            logger.log(done);
+    create: function(req, res) {
+        var article = req.body;
+        val.validate(article, userModel).then(function(value) {
+            logger.debug(value);
+            var newUser = new User(value);
+            newUser.save(function(err, theUser) {
+                if (err) {
+                    logger.error(err);
+                    res.status(400).send({
+                        success: false,
+                        error: err.message
+                    });
+                } else {
+                    logger.debug('User saved: ' + theUser);
+                    res.json({
+                        success: true,
+                        message: 'User created!',
+                        user: theUser
+                    });
+                }
+            });
         }).catch(function(err) {
-            logger.log(err);
+            logger.error(err.message);
+            res.status(400).send({
+                success: false,
+                error: err.message
+            });
         });
     }
 };
 
-module.exports = userController;
+module.exports = {
+    model: userModel,
+    controller: userController
+};

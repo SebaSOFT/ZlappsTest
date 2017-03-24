@@ -4,8 +4,9 @@
   "description": "This is the technical assestment for Zlapps Inc. interview",
   "main": "api/index.js",
   "scripts": {
-    "start": "set NODE_ENV=development && node api/index.js",
-    "test": "set NODE_ENV=test && mocha api/*.test.js api/**/*.test.js"
+    "start": "export NODE_ENV=production && node api/index.js",
+    "test": "export NODE_ENV=test && eslint . && mocha api/*.test.js api/**/*.test.js",
+    "dev": "export NODE_ENV=development && node api/index.js"
   },
   "repository": {
     "type": "git",
