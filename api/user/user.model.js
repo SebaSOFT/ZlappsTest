@@ -1,6 +1,6 @@
 'use strict';
 
-const mongoose = require('mongoose');
+const mongoose = require('../mongo');
 
 var userSchema = new mongoose.Schema({
     name: String,

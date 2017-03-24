@@ -1,9 +1,11 @@
 'use strict';
+
 const config = {
     mongoURI: {
-        development: 'debug',
-        test: 'info',
-        production: 'info'
+        development: 'mongodb://localhost/zlapps-dev',
+        test: 'mongodb://localhost/zlapps-test',
+        production: 'mongodb://localhost/zlapps-prod'
     }
 };
+
 module.exports = config;

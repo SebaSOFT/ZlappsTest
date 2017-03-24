@@ -1,18 +1,19 @@
 'use strict';
+
 const promise = require('bluebird');
 const logger = require('winston');
 const val = require('joi');
-promise.promisify(val.validate, {
-    context: val
-});
+val.validate = promise.promisify(val.validate);
+
 // article data model
 const articleModel = val.object().label('Article').keys({
-    _id: val.string().allow([null, '']).default(null).label('Article ID'),
+    _id: val.string().hex().optional().label('Article ID'),
     userId: val.number().integer().positive().required().label('User ID'),
     title: val.string().empty().required().label('Article Title'),
     text: val.string().empty().required().label('Article Text'),
     tags: val.array().items(val.string().empty().required()).label('Article Tags')
 }).unknown().required();
+
 // article controller
 const articleController = {
     create: function(article) {
@@ -32,6 +33,7 @@ const articleController = {
         logger.log(tag);
     }
 };
+
 module.exports = {
     model: articleModel,
     controller: articleController
