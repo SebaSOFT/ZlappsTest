@@ -4,10 +4,10 @@ const logger = require('winston');
 const path = require('path');
 const morgan = require('morgan');
 // logger setup
-logger.level = config.logger.level;
+logger.level = config.logLevel[config.env];
 logger.add(logger.transports.File, {
     filename: path.join(__dirname, '../logs') + '/api.' + config.env + '.log',
-    level: config.logger.level
+    level: config.logLevel[config.env]
 });
 // add morgan to the server to log HTTP requests/responses
 logger.stream = {
