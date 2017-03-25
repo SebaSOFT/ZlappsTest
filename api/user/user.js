@@ -18,27 +18,25 @@ const userModel = val.object().label('User').keys({
 // User controller
 const userController = {
     create: function(req, res) {
-        var article = req.body;
-        val.validate(article, userModel).then(function(value) {
+        var user = req.body;
+        val.validate(user, userModel).then(function(value) {
             logger.debug(value);
             var newUser = new User(value);
-            newUser.save(function(err, theUser) {
-                if (err) {
-                    logger.error(err);
-                    res.status(400).send({
-                        success: false,
-                        error: err.message
-                    });
-                } else {
-                    logger.debug('User saved: ' + theUser);
-                    res.json({
-                        success: true,
-                        message: 'User created!',
-                        user: theUser
-                    });
-                }
+            newUser.save().then(function(theUser) { // Creation OK!
+                logger.debug('User saved: ' + theUser);
+                res.json({
+                    success: true,
+                    message: 'User created!',
+                    user: theUser
+                });
+            }).catch(function(err) { // Save error
+                logger.error(err);
+                res.status(500).send({
+                    success: false,
+                    error: err.message
+                });
             });
-        }).catch(function(err) {
+        }).catch(function(err) { // Validation error
             logger.error(err.message);
             res.status(400).send({
                 success: false,
