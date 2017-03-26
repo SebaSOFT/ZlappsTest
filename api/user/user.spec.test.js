@@ -17,9 +17,9 @@ chai.use(chaiHttp);
 describe('Users', function() {
 
     // Setup
-    User.remove({});
+    User.collection.remove({});
     afterEach(function(done) {
-        User.remove({});
+        User.collection.remove();
         done();
     });
 
