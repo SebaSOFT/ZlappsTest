@@ -1,7 +1,6 @@
 # Zlapps Inc. Technical Assestments
 
 [![Build Status](https://secure.travis-ci.org/SebaSOFT/ZlappsTest.png?branch=master)](https://travis-ci.org/SebaSOFT/ZlappsTest)
-[![Coverage Status](https://coveralls.io/repos/github/SebaSOFT/ZlappsTest/badge.svg?branch=master)](https://coveralls.io/github/SebaSOFT/ZlappsTest?branch=master)
 [![Dependency Status](https://david-dm.org/SebaSOFT/ZlappsTest/status.svg)](https://david-dm.org/SebaSOFT/ZlappsTest)
 [![Dev-Dependency Status](https://david-dm.org/SebaSOFT/ZlappsTest/dev-status.svg)](https://david-dm.org/SebaSOFT/ZlappsTest?type=dev)
 

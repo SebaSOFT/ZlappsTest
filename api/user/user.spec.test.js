@@ -6,20 +6,20 @@ const it = mocha.it;
 const afterEach = mocha.afterEach;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const should = chai.should();
 const server = require('../server');
 const model = require('./user').model;
 const val = require('joi');
 const User = require('./user.model');
-var should = chai.should();
 
 chai.use(chaiHttp);
 
 describe('Users', function() {
 
     // Setup
-    User.remove({});
+    User.collection.remove({});
     afterEach(function(done) {
-        User.remove({});
+        User.collection.remove();
         done();
     });
 
@@ -40,8 +40,9 @@ describe('Users', function() {
             res.body.user.should.have.property('avatar');
             res.body.user.should.have.property('_id');
             should.not.equal(res.body.user._id, null);
-            val.validate(res.body.user, model).catch(function(err) { //eslint-disable-line no-unused-vars
+            val.validate(res.body.user, model).catch(function(err) {
                 should.not.exist(err);
+                done();
             });
             done();
         });
