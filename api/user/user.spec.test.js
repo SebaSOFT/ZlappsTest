@@ -42,6 +42,7 @@ describe('Users', function() {
             should.not.equal(res.body.user._id, null);
             val.validate(res.body.user, model).catch(function(err) {
                 should.not.exist(err);
+                done();
             });
             done();
         });
