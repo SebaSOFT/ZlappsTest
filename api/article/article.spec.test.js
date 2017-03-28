@@ -12,6 +12,8 @@ const server = require('../server');
 const model = require('./article').model;
 const val = require('joi');
 const Article = require('./article.model');
+const apiKey = 'Bearer 58d7af7071cd95261d483498';
+const headerName = 'Authorization';
 
 chai.use(chaiHttp);
 
@@ -34,7 +36,7 @@ describe('Articles', function() {
             text: 'So a warrior, a monk, and a rogue walk onto a battlefield and then... they die. A lot. And then they have to start all over.',
             tags: ['PC', 'XBONE', 'PS4', 'ROGUELIKE']
         };
-        chai.request(server).post('/api/articles').send(article).end(function(err, res) {
+        chai.request(server).post('/api/articles').set(headerName, apiKey).send(article).end(function(err, res) {
             should.not.exist(err);
             res.should.have.status(200);
             res.should.be.json;
@@ -76,12 +78,11 @@ describe('Articles', function() {
             tags: ['PS4', 'ROGUELIKE']
         });
         Article.collection.insert([newArticle1, newArticle2, newArticle3]).then(function(report) {
-            console.log(JSON.stringify(articles)); //eslint-disable-line
             var articles = report.ops;
             articles.should.be.a('array');
             articles.should.have.property('length');
             articles.length.should.equal(3);
-            chai.request(server).get('/api/articles/tag/' + 'PC').end(function(err, res) {
+            chai.request(server).get('/api/articles/tag/' + 'PC').set(headerName, apiKey).end(function(err, res) {
                 should.not.exist(err);
                 res.should.have.status(200);
                 res.should.be.json;
@@ -92,7 +93,7 @@ describe('Articles', function() {
                 res.body.articles.should.be.a('array');
                 res.body.articles.should.have.property('length');
                 res.body.articles.length.should.equal(2);
-                chai.request(server).get('/api/articles/tag/' + 'XBONE').end(function(err, res) {
+                chai.request(server).get('/api/articles/tag/' + 'XBONE').set(headerName, apiKey).end(function(err, res) {
                     should.not.exist(err);
                     res.should.have.status(200);
                     res.should.be.json;
@@ -103,7 +104,7 @@ describe('Articles', function() {
                     res.body.articles.should.be.a('array');
                     res.body.articles.should.have.property('length');
                     res.body.articles.length.should.equal(1);
-                    chai.request(server).get('/api/articles/tag/' + 'ROGUELIKE').end(function(err, res) {
+                    chai.request(server).get('/api/articles/tag/' + 'ROGUELIKE').set(headerName, apiKey).end(function(err, res) {
                         should.not.exist(err);
                         res.should.have.status(200);
                         res.should.be.json;
@@ -138,7 +139,7 @@ describe('Articles', function() {
                 text: 'MODIFIED',
                 tags: ['PC']
             };
-            chai.request(server).put('/api/articles/' + theArticle._id).send(articleEdited).end(function(err, res) {
+            chai.request(server).put('/api/articles/' + theArticle._id).set(headerName, apiKey).send(articleEdited).end(function(err, res) {
                 should.not.exist(err);
                 res.should.have.status(200);
                 res.should.be.json;
@@ -176,7 +177,7 @@ describe('Articles', function() {
         newArticle.save().then(function(theArticle) {
             theArticle.should.have.property('_id');
             should.not.equal(theArticle._id, null);
-            chai.request(server).delete('/api/articles/' + theArticle._id).end(function(err, res) {
+            chai.request(server).delete('/api/articles/' + theArticle._id).set(headerName, apiKey).end(function(err, res) {
                 should.not.exist(err);
                 res.should.have.status(200);
                 res.should.be.json;
