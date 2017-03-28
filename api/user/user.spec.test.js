@@ -11,6 +11,8 @@ const server = require('../server');
 const model = require('./user').model;
 const val = require('joi');
 const User = require('./user.model');
+const apiKey = 'Bearer 58d7af7071cd95261d483498';
+const headerName = 'Authorization';
 
 chai.use(chaiHttp);
 
@@ -28,7 +30,9 @@ describe('Users', function() {
             name: 'Sebastian',
             avatar: 'https://placehold.it/128.png'
         };
-        chai.request(server).post('/api/users').send(user).end(function(err, res) {
+        chai.request(server).post('/api/users').set(headerName, apiKey).send(user).end(function(err, res) {
+            //console.log(JSON.stringify(err)); //eslint-disable-line
+            should.not.exist(err);
             res.should.have.status(200);
             res.should.be.json;
             res.body.should.be.a('object');
@@ -52,7 +56,7 @@ describe('Users', function() {
             name: null,
             avatar: null
         };
-        chai.request(server).post('/api/users').send(user).end(function(err, res) {
+        chai.request(server).post('/api/users').set(headerName, apiKey).send(user).end(function(err, res) {
             res.should.have.status(400);
             res.should.be.json;
             should.exist(err);
