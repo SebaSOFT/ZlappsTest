@@ -17,6 +17,9 @@
 1. Run `npm install` to install server dependencies.
 2. Run `mongod` in a separate shell to keep an instance of the MongoDB Daemon running
 3. Run `npm run dev` to start the development server.
+4. To check the API documentation locally you cna access `http://localhost:8080/docs/`
+
+Also you can check the API Documentation from the [Swagger petstore site](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/SebaSOFT/ZlappsTest/master/public/api-docs.json).
 
 ## Testing
 
