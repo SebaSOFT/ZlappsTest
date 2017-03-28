@@ -19,6 +19,7 @@ const userModel = val.object().label('User').keys({
 const userController = {
     create: function(req, res) {
         var user = req.body;
+        delete user._id;
         val.validate(user, userModel).then(function(value) {
             logger.debug(value);
             var newUser = new User(value);

@@ -26,6 +26,7 @@ const editableArticleModel = val.object().label('Article').keys({
 const articleController = {
     create: function(req, res) {
         var article = req.body;
+        delete article._id;
         val.validate(article, articleModel).then(function(value) {
             logger.debug(value);
             var newArticle = new Article(value);
@@ -54,6 +55,7 @@ const articleController = {
     edit: function(req, res) {
         var article = req.body;
         var id = req.params.id;
+        delete article._id;
         val.validate(article, editableArticleModel).then(function(value) {
             logger.debug(value);
             Article.update({
@@ -65,7 +67,7 @@ const articleController = {
                 }).then(function(editedArticle) {
                     res.json({
                         success: true,
-                        message: 'OK',
+                        message: 'Article edited!',
                         article: editedArticle
                     });
                 }).catch(function(err) {
@@ -92,7 +94,6 @@ const articleController = {
     },
     delete: function(req, res) {
         var id = req.params.id;
-
         Article.findOne({
             _id: id
         }).then(function(theArticle) {
@@ -100,7 +101,7 @@ const articleController = {
                 logger.debug(report);
                 res.json({
                     success: true,
-                    message: 'OK'
+                    message: 'Article deleted!'
                 });
             }).catch(function(err) {
                 logger.error(err.message);
@@ -111,7 +112,7 @@ const articleController = {
             });
         }).catch(function(err) {
             logger.error(err);
-            res.status(400).send({
+            res.status(404).send({
                 success: false,
                 error: err.message
             });

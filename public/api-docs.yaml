@@ -1,0 +1,391 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Zlapps Inc. Assestment API
+  description: This started in a Zlapps Inc. Interview. They kindly asked for me to do a documented API. Here it goes, made in Node.JS + MongoDB + Express.js + Passport.js + Mongoose + Mocha.js + Chai.js.
+    __NOTE:__ When using the "Authenticate" button, please use "Bearer <your token>" to correctly comply with the RFC HTTP-Bearer token specification of the API.
+  contact:
+    name: Sebatián Diéguez
+    email: sebasoft@gmail.com
+    url: https://github.com/SebaSOFT/
+  license:
+    name: MIT
+    url: https://github.com/SebaSOFT/ZlappsTest/blob/master/LICENSE
+host: localhost:8080
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+  /users:
+    post:
+      security:
+        - Bearer: []
+      tags: 
+        - 'Users'
+      summary: Creates a User
+      description: Creates a User. The _id parameter in the object will be ignored
+      operationId: createUser
+      parameters:
+        - name: user
+          in: body
+          description: User to create
+          required: true
+          schema:
+            $ref: '#/definitions/NewUser'
+      responses:
+        200:
+          description: The new user
+          schema:
+            $ref: '#/definitions/UserResponse'
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Validation error
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Unauthorized
+        500:
+          description: Could not store the user
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Internal Server Error
+  /articles:
+    post:
+      security:
+        - Bearer: []
+      tags: 
+        - 'Articles'
+      summary: Creates an Article
+      description: Creates an Article. The _id parameter in the object will be ignored
+      operationId: createArticle
+      parameters:
+        - name: article
+          in: body
+          description: Article to create
+          required: true
+          schema:
+            $ref: '#/definitions/NewArticle'
+      responses:
+        200:
+          description: The new article
+          schema:
+            $ref: '#/definitions/ArticleResponse'
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Validation error
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Unauthorized
+        500:
+          description: Could not store the article
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Internal Server Error
+  /articles/{id}:
+    put:
+      security:
+        - Bearer: []
+      tags: 
+        - 'Articles'
+      summary: Modifies an Article
+      description: Creates an Article. The _id parameter in the object will be ignored
+      operationId: editArticle
+      parameters:
+        - name: id
+          in: path
+          description: Article ID
+          required: true
+          type: string
+        - name: article
+          in: body
+          description: Article parameter to edit. Each top-level parameter will replace the previous one (i.e tags will be completely replace the previous one)
+          required: true
+          schema:
+            $ref: '#/definitions/EditableArticle'
+      responses:
+        200:
+          description: The new article
+          schema:
+            $ref: '#/definitions/ArticleResponse'
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Validation error
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Unauthorized
+        404:
+          description: Article not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Article not found
+        500:
+          description: Could not modify the article
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Internal Server Error
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - 'Articles'
+      summary: Deletes an article
+      description: Deletes a single article based on the ID supplied
+      operationId: deleteArticle
+      parameters:
+        - name: id
+          in: path
+          description: ID of article to delete
+          required: true
+          type: string
+      responses:
+        200:
+          description: Article deleted
+          schema:
+            $ref: '#/definitions/GoodResponse'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Unauthorized
+        404:
+          description: Article not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Article not found
+        500:
+          description: Could not delete the article
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Internal Server Error
+  /articles/tag/{tag}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'Articles'
+      summary: Returns all articles with the specified tag
+      description: Returns an array of articles that contains a specified tag value. The tag value is case-insensitive
+      operationId: getArticlesByTag
+      parameters:
+        - name: tag
+          in: path
+          description: Tag name to retrieve articles for
+          required: true
+          type: string
+      responses:
+        200:
+          description: The articles list. This list could be empty, meaning there were no article found with the give tag
+          schema:
+            $ref: '#/definitions/ArticlesResponse'
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Validation error
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Unauthorized
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          examples:
+            application/json:
+              success: false
+              error: Internal Server Error
+definitions:
+  Response:
+    description: Standard Response object
+    required:
+      - success
+    properties:
+      success:
+        description: Success flag to indicate if the operation will contain a valid response or will provide an error message
+        type: boolean
+  GoodResponse:
+    description: A good response that doesn't contain an error message
+    allOf:
+      - $ref: '#/definitions/Response'
+      - type: object
+        required:
+          - message
+        properties:
+          message:
+            type: string
+            description: A message of what operation was executed
+  ErrorResponse:
+    description: An error response that announces a failure in a operation
+    allOf:
+      - $ref: '#/definitions/Response'
+      - type: object
+        required:
+          - error
+        properties:
+          error:
+            type: string
+            description: An error message describing the failure
+  UserResponse:
+    description: A success response that returns a User object
+    allOf:
+      - $ref: '#/definitions/GoodResponse'
+      - type: object
+        required:
+          - user
+        properties:
+          user:
+            $ref: '#/definitions/User'
+  ArticleResponse:
+    description: A success response that returns an Article object
+    allOf:
+      - $ref: '#/definitions/GoodResponse'
+      - type: object
+        required:
+          - article
+        properties:
+          article:
+            $ref: '#/definitions/Article'
+  ArticlesResponse:
+    description: A success response that returns an Array of Article objects
+    allOf:
+      - $ref: '#/definitions/GoodResponse'
+      - properties:
+          articles:
+            description: A list of article objects
+            type: array
+            items:
+              $ref: '#/definitions/Article'
+  User:
+    description: An object representing a User
+    allOf:
+      - $ref: '#/definitions/NewUser'
+      - required:
+          - _id
+        properties:
+          _id:
+            readOnly: true
+            description: User ID
+            type: string
+            example: '507f1f77bcf86cd799439011'
+  NewUser:
+    required:
+      - name
+      - avatar
+    properties:
+      name:
+        description: Complete name of the user
+        type: string
+        example: 'Sebastian Dieguez'
+      avatar:
+        description: A URL that links to the avatar image
+        type: string
+        example: 'https://s.gravatar.com/avatar/66617cf6a7a0829f308ea09552b05d2a?s=80'
+  Article:
+    description: An object representing a User
+    allOf:
+      - $ref: '#/definitions/NewArticle'
+      - required:
+          - _id
+        properties:
+          _id:
+            readOnly: true
+            description: Article ID
+            type: string
+            example: '58da80f56ad284212afc69d0'
+  NewArticle:
+    allOf:
+      - $ref: '#/definitions/EditableArticle'
+      - type: object
+        required:
+          - userId
+          - title
+          - text
+          - tags
+  EditableArticle:
+    properties:
+      userId:
+        description: A User ID to be assigned to the Author of the Article
+        type: string
+        example: '58da82141c04d521db782fab'
+      title:
+        description: The title of the article
+        type: string
+        example: 'Has been heroes review'
+      text:
+        description: The complete text of the article
+        type: string
+        example: 'So a warrior, a monk, and a rogue walk onto a battlefield and then...'
+      tags:
+        description: A list of string representing the tags or keywords to search this article for
+        type: array
+        items:
+          type: string
+        example:
+          - 'PC'
+          - 'XBOX'

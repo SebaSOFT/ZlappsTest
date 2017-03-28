@@ -6,9 +6,16 @@ const bodyParser = require('body-parser');
 const apirouter = require('./router.api');
 const path = require('path');
 const logger = require('./logger').logger;
+const cors = require('cors');
 const app = express();
 const passport = require('passport');
 const BearerStrategy = require('passport-http-bearer').Strategy;
+
+// Enable CORS only for development environment
+if (config.env == 'development') {
+    app.use(cors());
+    app.options('*', cors());
+}
 
 // static file serve fallback
 app.use(express.static(path.join(__dirname, '../public'), {
@@ -38,7 +45,8 @@ passport.use(new BearerStrategy(function(token, done) {
     done(null, found);
 }));
 passport.unuse('session');
-// api router
+
+// api Router
 app.use('/api', passport.authenticate('bearer', {
     session: false
 }), apirouter);

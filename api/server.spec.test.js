@@ -9,6 +9,6 @@ const server = require('./server'); //eslint-disable-line no-unused-vars
 chai.use(chaiHttp);
 
 describe('API Documentation', function() {
-    it('should should provide a Swagger definition json on /api/api-docs.json GET');
+    it('should should provide a Swagger definition json on /docs/api-docs.json GET');
     it('should should provide a documentation page on /docs GET');
 });
